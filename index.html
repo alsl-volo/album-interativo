@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Álbum Interativo - Ana</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+min-height:100vh;
+background:linear-gradient(135deg,#bfa9a2,#eadbcf,#a98d96);
+font-family:Georgia,"Times New Roman",serif;
+color:#5b414b;
+padding:22px;
+overflow-x:hidden;
+}
+
+.album{
+max-width:1480px;
+min-height:94vh;
+margin:auto;
+display:grid;
+grid-template-columns:78px 1fr 185px;
+background:linear-gradient(135deg,#705658,#b49aa0,#7c6266);
+border-radius:34px;
+overflow:hidden;
+box-shadow:0 28px 80px rgba(40,25,22,.28);
+position:relative;
+}
+
+.rings{
+position:relative;
+background:linear-gradient(90deg,rgba(60,38,35,.55),rgba(255,255,255,.05));
+}
+
+.ring{
+position:absolute;
+left:12px;
+width:55px;
+height:18px;
+border-radius:999px;
+background:linear-gradient(135deg,#73572d,#f3d486,#7a5b30);
+box-shadow:inset 0 2px 4px rgba(255,255,255,.5),0 5px 12px rgba(0,0,0,.3);
+}
+
+.ring:nth-child(1){top:85px}
+.ring:nth-child(2){top:170px}
+.ring:nth-child(3){top:255px}
+.ring:nth-child(4){top:340px}
+.ring:nth-child(5){top:425px}
+.ring:nth-child(6){top:510px}
+.ring:nth-child(7){top:595px}
+
+.page-area{padding:28px 0 88px 0}
+
+.page{
+min-height:calc(94vh - 118px);
+margin-right:-10px;
+background:
+radial-gradient(circle at 18% 20%,rgba(255,255,255,.85),transparent 25%),
+radial-gradient(circle at 72% 62%,rgba(255,220,165,.35),transparent 30%),
+linear-gradient(135deg,#fff8ef,#f5e3cf);
+border-radius:28px;
+border:1px solid rgba(169,126,76,.3);
+box-shadow:0 18px 42px rgba(75,50,38,.16);
+position:relative;
+overflow:hidden;
+padding:38px 46px;
+}
+
+.page:before{
+content:"";
+position:absolute;
+inset:22px;
+border:1px solid rgba(198,154,86,.45);
+border-radius:24px;
+pointer-events:none;
+z-index:1;
+}
+
+.page:after{
+content:"";
+position:absolute;
+inset:0;
+background-image:radial-gradient(circle,rgba(116,83,85,.13) 1.2px,transparent 1.7px);
+background-size:34px 34px;
+opacity:.35;
+pointer-events:none;
+}
+
+.content{position:relative;z-index:2}
+
+.cover{
+min-height:calc(94vh - 200px);
+display:grid;
+grid-template-columns:310px 1fr;
+gap:35px;
+align-items:center;
+}
+
+.symbol-area{
+height:560px;
+display:flex;
+justify-content:center;
+align-items:center;
+position:relative;
+}
+
+.symbol-glow{
+position:absolute;
+width:280px;
+height:280px;
+border-radius:50%;
+background:radial-gradient(circle,rgba(255,218,165,.55),transparent 70%);
+filter:blur(18px);
+}
+
+.symbol{
+width:230px;
+height:230px;
+border-radius:50%;
+display:grid;
+place-items:center;
+font-size:7rem;
+color:#76505b;
+background:
+linear-gradient(135deg,rgba(255,250,240,.76),rgba(240,210,190,.55));
+border:1px solid rgba(198,154,86,.45);
+box-shadow:
+0 20px 45px rgba(75,45,40,.16),
+inset 0 0 30px rgba(255,255,255,.35);
+position:relative;
+z-index:2;
+animation:softFloat 4s infinite alternate ease-in-out;
+}
+
+@keyframes softFloat{
+from{transform:translateY(0) scale(1)}
+to{transform:translateY(-8px) scale(1.03)}
+}
+
+.cover-text{text-align:center;padding-right:20px}
+
+.eyebrow{
+text-transform:uppercase;
+letter-spacing:9px;
+font-size:.95rem;
+color:#8d6b72;
+font-weight:bold;
+margin-bottom:24px;
+}
+
+.tiny{
+font-size:1.4rem;
+color:#806067;
+margin-bottom:24px;
+}
+
+.cover h1,.header h2{
+font-size:clamp(4rem,8vw,6.5rem);
+line-height:.9;
+font-style:italic;
+font-weight:500;
+color:#684955;
+text-shadow:0 4px 0 rgba(255,255,255,.55),0 12px 30px rgba(77,47,45,.18);
+margin-bottom:24px;
+}
+
+.ornament{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:18px;
+color:#c69a56;
+font-size:1.5rem;
+margin-bottom:28px;
+}
+
+.ornament:before,.ornament:after{
+content:"";
+width:150px;
+height:1px;
+background:linear-gradient(90deg,transparent,#c69a56);
+}
+
+.ornament:after{background:linear-gradient(90deg,#c69a56,transparent)}
+
+.quote{
+max-width:650px;
+margin:0 auto 30px;
+padding:20px 26px;
+border-radius:18px;
+background:rgba(247,229,203,.88);
+border:1px solid rgba(198,154,86,.42);
+color:#765a44;
+font-size:1.25rem;
+font-style:italic;
+box-shadow:0 10px 22px rgba(97,66,43,.12);
+}
+
+.explore,.btn{
+border:0;
+font-family:inherit;
+cursor:pointer;
+}
+
+.explore{
+background:transparent;
+color:#805c35;
+font-size:1.35rem;
+font-style:italic;
+display:inline-flex;
+align-items:center;
+gap:12px;
+}
+
+.explore span{
+width:42px;
+height:42px;
+border-radius:50%;
+background:#f7dfb8;
+border:1px solid rgba(198,154,86,.7);
+display:grid;
+place-items:center;
+font-size:1.7rem;
+}
+
+.album-view{display:none}
+.album-view.show{display:block}
+
+.header{text-align:center;padding:10px 10px 26px}
+.header h2{font-size:clamp(4rem,9vw,7rem)}
+.header p{color:#806b64;font-size:1.05rem}
+
+.subtabs{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:12px;
+margin:0 auto 28px;
+}
+
+.subtabs button{
+border:1px solid rgba(198,154,86,.36);
+background:#fff8ef;
+padding:12px 20px;
+border-radius:999px;
+color:#6b4c4f;
+font-size:1rem;
+font-weight:bold;
+font-family:inherit;
+cursor:pointer;
+box-shadow:0 8px 18px rgba(93,63,42,.08);
+}
+
+.subtabs button.active,.subtabs button:hover{background:#ead1cb}
+
+.cards{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+margin-bottom:30px;
+}
+
+.card{
+background:rgba(255,255,255,.62);
+border:1px solid rgba(198,154,86,.26);
+border-radius:26px;
+padding:24px;
+box-shadow:0 14px 28px rgba(84,55,42,.1);
+}
+
+.card h3{
+font-size:2rem;
+margin-bottom:15px;
+color:#684955;
+}
+
+.actions{
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+margin-top:18px;
+}
+
+.btn{
+border-radius:999px;
+padding:13px 19px;
+background:linear-gradient(135deg,#805f63,#c69a56);
+color:white;
+font-weight:bold;
+font-size:1rem;
+box-shadow:0 10px 22px rgba(93,60,42,.15);
+}
+
+textarea{
+width:100%;
+min-height:145px;
+border-radius:18px;
+border:1px solid rgba(198,154,86,.35);
+background:rgba(255,255,255,.72);
+padding:15px;
+resize:vertical;
+font-family:inherit;
+font-size:1rem;
+color:#5c4248;
+}
+
+.gallery-title{
+display:flex;
+justify-content:space-between;
+align-items:end;
+margin-bottom:20px;
+color:#684955;
+}
+
+.gallery-title h3{font-size:3rem}
+
+.gallery{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+gap:20px;
+}
+
+.photo{
+background:rgba(255,255,255,.78);
+padding:10px;
+border-radius:24px;
+box-shadow:0 16px 36px rgba(79,51,41,.14);
+border:1px solid rgba(198,154,86,.28);
+}
+
+.photo img{
+width:100%;
+height:230px;
+object-fit:cover;
+border-radius:18px;
+display:block;
+}
+
+.photo-info{
+display:flex;
+justify-content:space-between;
+gap:8px;
+align-items:center;
+padding:10px 4px 2px;
+color:#76625c;
+font-size:.9rem;
+}
+
+.photo-info span{
+overflow:hidden;
+white-space:nowrap;
+text-overflow:ellipsis;
+}
+
+.del{
+border:0;
+background:#fff0ed;
+color:#9a3f3d;
+width:30px;
+height:30px;
+border-radius:50%;
+font-weight:bold;
+cursor:pointer;
+}
+
+.empty{
+min-height:220px;
+display:grid;
+place-items:center;
+border:2px dashed rgba(198,154,86,.36);
+border-radius:28px;
+background:rgba(255,255,255,.4);
+text-align:center;
+color:#806b64;
+padding:25px;
+}
+
+.empty h3{
+color:#684955;
+font-size:1.7rem;
+margin-bottom:8px;
+}
+
+.tabs{
+padding-top:90px;
+position:relative;
+z-index:5;
+}
+
+.tab{
+width:165px;
+min-height:115px;
+margin:0 0 16px -10px;
+border:0;
+border-radius:0 28px 28px 0;
+background:#f7eadb;
+color:#684955;
+font-family:inherit;
+font-size:1.15rem;
+cursor:pointer;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:10px;
+box-shadow:8px 10px 20px rgba(57,38,33,.12);
+transition:.2s;
+}
+
+.tab .icon{font-size:2rem}
+
+.tab.active,.tab:hover{
+transform:translateX(-10px);
+background:#ead1cb;
+}
+
+.bottom{
+position:absolute;
+bottom:0;
+left:78px;
+right:0;
+min-height:74px;
+background:rgba(112,82,88,.75);
+display:flex;
+justify-content:center;
+align-items:center;
+gap:8px;
+padding:10px 18px;
+backdrop-filter:blur(10px);
+z-index:10;
+}
+
+.bottom button{
+border:0;
+background:transparent;
+color:white;
+font-family:inherit;
+font-size:1rem;
+padding:10px 18px;
+border-radius:999px;
+cursor:pointer;
+}
+
+.bottom button:hover,.bottom button.active{background:rgba(255,255,255,.16)}
+
+@media(max-width:1000px){
+body{padding:0}
+.album{min-height:100vh;border-radius:0;grid-template-columns:1fr}
+.rings,.tabs{display:none}
+.page-area{padding:12px 12px 88px}
+.page{margin:0;padding:28px 22px}
+.cover{grid-template-columns:1fr}
+.cover h1,.header h2{font-size:3.5rem}
+.symbol-area{height:auto;padding:20px 0}
+.symbol{width:170px;height:170px;font-size:5rem}
+.cards{grid-template-columns:1fr}
+.bottom{left:0;justify-content:flex-start;overflow-x:auto}
+}
+</style>
+</head>
+
+<body>
+
+<div class="album">
+
+<div class="rings">
+<div class="ring"></div>
+<div class="ring"></div>
+<div class="ring"></div>
+<div class="ring"></div>
+<div class="ring"></div>
+<div class="ring"></div>
+<div class="ring"></div>
+</div>
+
+<main class="page-area">
+<section class="page">
+<div class="content">
+
+<section class="cover" id="cover">
+
+<div class="symbol-area">
+<div class="symbol-glow"></div>
+<div class="symbol" id="mainSymbol">♡</div>
+</div>
+
+<div class="cover-text">
+<div class="eyebrow">O MEU ARQUIVO DE MEMÓRIAS</div>
+<div class="tiny">— ♥ —</div>
+<h1 id="coverTitle">Família</h1>
+<div class="ornament">♡</div>
+<div class="quote" id="coverQuote">♡ As nossas memórias, o nosso lugar favorito.</div>
+<button class="explore" onclick="openAlbum()">Explorar esta pasta <span>›</span></button>
+</div>
+
+</section>
+
+<section class="album-view" id="albumView">
+
+<div class="header">
+<div class="eyebrow">Álbum Interativo</div>
+<h2 id="albumTitle">Família</h2>
+<p id="albumSubtitle">Escolhe uma subpasta e adiciona fotografias.</p>
+</div>
+
+<div class="subtabs" id="subtabs"></div>
+
+<div class="cards">
+
+<div class="card">
+<h3>📍 Pasta atual</h3>
+<p id="path">Família / Filhos</p>
+
+<div class="actions">
+<label class="btn">
+➕ Adicionar fotos
+<input id="upload" type="file" accept="image/*" multiple hidden>
+</label>
+<button class="btn" onclick="clearCurrentFolder()">🗑️ Limpar</button>
+</div>
+</div>
+
+<div class="card">
+<h3>📝 Notas</h3>
+<textarea id="notes" placeholder="Escreve aqui memórias, locais, datas..."></textarea>
+</div>
+
+</div>
+
+<div class="gallery-title">
+<h3>Galeria</h3>
+<span id="count">0 fotografias</span>
+</div>
+
+<div id="gallery" class="gallery"></div>
+
+<div id="empty" class="empty">
+<div>
+<h3>Esta pasta ainda está vazia</h3>
+<p>Clica em “Adicionar fotos” para começares o teu álbum.</p>
+</div>
+</div>
+
+</section>
+
+</div>
+</section>
+</main>
+
+<aside class="tabs" id="tabs"></aside>
+
+<nav class="bottom">
+<button id="homeBtn" class="active" onclick="showCover()">⌂ Início</button>
+<button onclick="openAlbum()">♡ Álbuns</button>
+<button onclick="clearAll()">⚙ Limpar tudo</button>
+</nav>
+
+</div>
+
+<script>
+const structure={
+"Família":["Filhos","Família","Eu"],
+"Paisagens":["Céu","Estrelas"],
+"Tony Carreira":["Galeria","Minhas","Alter do Chão","Oleiros","Vila Velha de Rodão","Arganil"],
+"Il Volo":["Meet and Great","Grupo","Luca","Ignazio","Piero","Outras"]
+};
+
+const icons={
+"Família":"♡",
+"Paisagens":"☾",
+"Tony Carreira":"🎙",
+"Il Volo":"♫"
+};
+
+const quotes={
+"Família":"♡ As nossas memórias, o nosso lugar favorito.",
+"Paisagens":"☾ Céu, estrelas e pequenos infinitos guardados.",
+"Tony Carreira":"🎙 Concertos, emoções e momentos para recordar.",
+"Il Volo":"♫ Música, vozes e memórias inesquecíveis."
+};
+
+let currentMain="Família";
+let currentSub="Filhos";
+
+let photos=JSON.parse(localStorage.getItem("albumAnaFotosLimpo"))||{};
+let notesData=JSON.parse(localStorage.getItem("albumAnaNotasLimpo"))||{};
+
+const cover=document.getElementById("cover");
+const albumView=document.getElementById("albumView");
+const tabs=document.getElementById("tabs");
+const subtabs=document.getElementById("subtabs");
+const gallery=document.getElementById("gallery");
+const empty=document.getElementById("empty");
+const notes=document.getElementById("notes");
+
+function key(){
+return currentMain+"__"+currentSub;
+}
+
+function save(){
+localStorage.setItem("albumAnaFotosLimpo",JSON.stringify(photos));
+localStorage.setItem("albumAnaNotasLimpo",JSON.stringify(notesData));
+}
+
+function buildTabs(){
+tabs.innerHTML="";
+Object.keys(structure).forEach(main=>{
+const btn=document.createElement("button");
+btn.className="tab"+(main===currentMain?" active":"");
+btn.innerHTML=`<div class="icon">${icons[main]}</div><div>${main}</div>`;
+btn.onclick=()=>{
+saveCurrentNote();
+currentMain=main;
+currentSub=structure[main][0];
+showCover();
+};
+tabs.appendChild(btn);
+});
+}
+
+function buildSubtabs(){
+subtabs.innerHTML="";
+structure[currentMain].forEach(sub=>{
+const btn=document.createElement("button");
+btn.textContent=sub;
+btn.className=sub===currentSub?"active":"";
+btn.onclick=()=>{
+saveCurrentNote();
+currentSub=sub;
+renderAlbum();
+};
+subtabs.appendChild(btn);
+});
+}
+
+function saveCurrentNote(){
+notesData[key()]=notes.value;
+save();
+}
+
+notes.addEventListener("input",saveCurrentNote);
+
+function showCover(){
+cover.style.display="grid";
+albumView.classList.remove("show");
+
+document.getElementById("coverTitle").textContent=currentMain;
+document.getElementById("coverQuote").textContent=quotes[currentMain];
+document.getElementById("mainSymbol").textContent=icons[currentMain];
+
+document.querySelectorAll(".bottom button").forEach(b=>b.classList.remove("active"));
+document.getElementById("homeBtn").classList.add("active");
+
+buildTabs();
+}
+
+function openAlbum(){
+cover.style.display="none";
+albumView.classList.add("show");
+
+document.querySelectorAll(".bottom button").forEach(b=>b.classList.remove("active"));
+
+buildTabs();
+buildSubtabs();
+renderAlbum();
+}
+
+function renderAlbum(){
+const k=key();
+const list=photos[k]||[];
+
+document.getElementById("albumTitle").textContent=currentMain;
+document.getElementById("albumSubtitle").textContent="Pasta: "+currentSub;
+document.getElementById("path").textContent=currentMain+" / "+currentSub;
+
+document.getElementById("count").textContent=list.length===1?"1 fotografia":list.length+" fotografias";
+
+notes.value=notesData[k]||"";
+
+buildTabs();
+buildSubtabs();
+
+gallery.innerHTML="";
+empty.style.display=list.length?"none":"grid";
+
+list.forEach((photo,index)=>{
+const div=document.createElement("div");
+div.className="photo";
+div.innerHTML=`
+<img src="${photo.data}">
+<div class="photo-info">
+<span title="${photo.name}">${photo.name}</span>
+<button class="del" onclick="deletePhoto(${index})">×</button>
+</div>
+`;
+gallery.appendChild(div);
+});
+}
+
+document.getElementById("upload").addEventListener("change",e=>{
+const files=Array.from(e.target.files);
+const k=key();
+
+if(!photos[k])photos[k]=[];
+
+files.forEach(file=>{
+const reader=new FileReader();
+reader.onload=ev=>{
+photos[k].push({
+name:file.name,
+data:ev.target.result
+});
+save();
+renderAlbum();
+};
+reader.readAsDataURL(file);
+});
+
+e.target.value="";
+});
+
+function deletePhoto(index){
+photos[key()].splice(index,1);
+save();
+renderAlbum();
+}
+
+function clearCurrentFolder(){
+if(!confirm("Queres apagar as fotografias desta pasta?"))return;
+photos[key()]=[];
+save();
+renderAlbum();
+}
+
+function clearAll(){
+if(!confirm("Queres limpar todas as fotografias e notas?"))return;
+localStorage.removeItem("albumAnaFotosLimpo");
+localStorage.removeItem("albumAnaNotasLimpo");
+photos={};
+notesData={};
+renderAlbum();
+}
+
+showCover();
+</script>
+
+</body>
+</html>
